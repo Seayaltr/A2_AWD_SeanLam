@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
 
   const booking = { reference, title, firstName, lastName, email: email.toLowerCase(), phone, bookedAt: new Date().toISOString(), status: 'confirmed' };
 
-  await db.collection('schedules').updateOne({ _id: new ObjectId(scheduleId) }, { $push: { bookings: booking as any } });
+  await db.collection('schedules').updateOne(
+    { _id: new ObjectId(scheduleId) },
+    { $push: { bookings: booking } } as any
+  );
   await db.collection('passengers').updateOne(
     { email: email.toLowerCase() },
     { $set: { title, firstName, lastName, email: email.toLowerCase(), phone, updatedAt: new Date().toISOString() } },
